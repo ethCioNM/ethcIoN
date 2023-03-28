@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<style>
+		#countdown {
+			position: absolute;
+			top: 19.7%;
+			left: 60%;
+			transform: translate(-55%, -113%);
+		
+			color: white;
+			text-align: center;
+			font-size: 14px;
+			padding: 10px;
+		}
+		
+		#image-container {
+			position: relative;
+			width: 100%;
+			height: auto;
+		}
+		
+		img {
+			display: block;
+			margin: auto;
+			max-width: 100%;
+			height: auto;
+		}
+	</style>
+</head>
+<body onload="startCountdown()">
+	<div id="image-container">
+		<img src="https://i.328888.xyz/2023/03/28/iWWcLU.png" alt="Example Image">
+		<div id="countdown"></div>
+	</div>
+	<script>
+		function startCountdown() {
+			// 获取存储的时间戳
+			let storedTimestamp = localStorage.getItem("countdownTimestamp");
+
+			let now = new Date().getTime();
+			let countdownTime;
+
+			if (storedTimestamp === null) {
+				// 如果没有存储的时间戳，生成一个随机时间作为倒计时起始时间
+				countdownTime = Math.floor(Math.random() * (24*60*60*1000*10)) + now;
+				localStorage.setItem("countdownTimestamp", countdownTime);
+			} else {
+				// 计算剩余时间
+				countdownTime = parseInt(storedTimestamp);
+			}
+
+			let x = setInterval(function() {
+				// 计算剩余时间
+				let distance = countdownTime - now;
+
+				let days = Math.floor(distance / (1000 * 60 * 60 * 24));
+				let hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+				let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+				let seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+				// 在页面上显示倒计时
+				document.getElementById("countdown").innerHTML = days + "天 " + hours + "小时 "
+				+ minutes + "分钟 " + seconds + "秒 ";
+
+				// 倒计时结束时清除定时器
+				if (distance < 0) {
+					clearInterval(x);
+					document.getElementById("countdown").innerHTML = "已经结束";
+				}
+
+				// 更新当前时间
+				now = new Date().getTime();
+			}, 1000);
+		}
+	</script>
+	
+	
+</body>
+
+</html>
